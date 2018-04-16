@@ -1,24 +1,21 @@
 package edu.washington.bennyn.tipcalc
 
-import android.app.Activity
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var amount: EditText
     lateinit var btn: Button
+    //lateinit var tipPercentage: Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        //tipPercentage = findViewById(R.id.tipSelection)
         btn = findViewById(R.id.tipBtn)
         btn.isEnabled = false
         amount = findViewById(R.id.inputAmount)
