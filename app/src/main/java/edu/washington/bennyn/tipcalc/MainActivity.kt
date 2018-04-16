@@ -10,12 +10,12 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var amount: EditText
     lateinit var btn: Button
-    //lateinit var tipPercentage: Spinner
+    lateinit var tipPercentage: Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //tipPercentage = findViewById(R.id.tipSelection)
+        tipPercentage = findViewById(R.id.tipSelection)
         btn = findViewById(R.id.tipBtn)
         btn.isEnabled = false
         amount = findViewById(R.id.inputAmount)
@@ -61,10 +61,11 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    // Makes toast of the tip amount in this format: $0.00
+    // Makes toast of the tip amount with a "$" in front followed by two numbers after the decimal
     private fun makeToast() {
         val fullAmount = amount.text.substring(1, amount.length()).toDouble()
-        val tip = "%.2f".format(fullAmount * 0.15)
+        val percent = tipPercentage.selectedItem.toString().dropLast(1).toInt() //get rid of "%" and convert to a number
+        val tip = "%.2f".format(fullAmount * (percent * 0.01))
         Toast.makeText(applicationContext, "$$tip", Toast.LENGTH_SHORT).show()
     }
 }
