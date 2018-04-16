@@ -54,17 +54,20 @@ class MainActivity : AppCompatActivity() {
             //Puts a dollar sign to the front of the input
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 btn.isEnabled = amount.text.isNotBlank()
-                if (amount.text.toString()[0] != '$') {
-                    textBox.text = "$${amount.text}"
-                    amount.setSelection(amount.length())
+                if (amount.length() >= 1) {
+                    if (amount.text.toString()[0] != '$') {
+                        textBox.text = "$${amount.text}"
+                        amount.setSelection(amount.length())
+                    }
                 }
             }
         })
     }
 
+    // Makes toast of the tip amount in this format: $0.00
     private fun makeToast() {
         val fullAmount = amount.text.substring(1, amount.length()).toDouble()
         val tip = "%.2f".format(fullAmount * 0.15)
-        val toast = Toast.makeText(applicationContext, "$${tip}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext, "$$tip", Toast.LENGTH_SHORT).show()
     }
 }
