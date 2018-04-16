@@ -1,13 +1,15 @@
 package edu.washington.bennyn.tipcalc
 
+import android.app.Activity
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-
+import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,22 +22,49 @@ class MainActivity : AppCompatActivity() {
         btn = findViewById(R.id.tipBtn)
         btn.isEnabled = false
         amount = findViewById(R.id.inputAmount)
+        btn.setOnClickListener {
+            makeToast()
+        }
     }
 
     override fun onStart() {
         super.onStart()
         amount.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
+            val textBox: TextView = amount
 
+            //Checks if the input has less than two numbers after the decimal
+            override fun afterTextChanged(p0: Editable?) {
+                if (amount.length() >= 3) {
+                    if (amount.text.contains('.')) {
+                        val periodIndex = amount.text.indexOf('.', 0, true)
+                        //Gets rid of the last digit if input looks like this: $0.000
+                        if (periodIndex == amount.length() - 4) {
+                            textBox.text = textBox.text.substring(0, textBox.length() - 1)
+                            amount.setSelection(amount.length())
+                        }
+                    }
+                }
             }
 
+            // Looks at text before anything changes
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
 
+            //Puts a dollar sign to the front of the input
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 btn.isEnabled = amount.text.isNotBlank()
+                if (amount.text.toString()[0] != '$') {
+                    textBox.text = "$${amount.text}"
+                    amount.setSelection(amount.length())
+                }
             }
         })
+    }
+
+    private fun makeToast() {
+        val fullAmount = amount.text.substring(1, amount.length()).toDouble()
+        val tip = "%.2f".format(fullAmount * 0.15)
+        val toast = Toast.makeText(applicationContext, "$${tip}", Toast.LENGTH_SHORT).show()
     }
 }
