@@ -47,13 +47,22 @@ class MainActivity : AppCompatActivity() {
                 oldText = amount.text.toString()
             }
 
-            //Puts a dollar sign to the front of the input
+            // Puts a dollar sign to the front of the input. If the user places the cursor in front
+            // of the dollar sign and types in a number, the dollar sign will be pushed to the front
+            // again.
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 btn.isEnabled = amount.text.isNotBlank()
                 if (amount.length() >= 1) {
                     if (amount.text.toString()[0] != '$') {
                         textBox.text = "$${amount.text}"
                         amount.setSelection(amount.length())
+                    }
+                }
+
+                if (amount.length() >= 3) {
+                    if (amount.text.toString()[2] == '$') {
+                        val newText = textBox.text.toString().replace("$", "", true)
+                        textBox.text = "$${newText}"
                     }
                 }
             }
