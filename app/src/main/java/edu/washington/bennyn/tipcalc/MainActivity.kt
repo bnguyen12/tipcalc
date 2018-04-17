@@ -28,24 +28,23 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         amount.addTextChangedListener(object : TextWatcher {
             val textBox: TextView = amount
-
+            var oldText = ""
             //Checks if the input has less than two numbers after the decimal
             override fun afterTextChanged(p0: Editable?) {
                 if (amount.length() >= 3) {
                     if (amount.text.contains('.')) {
                         val periodIndex = amount.text.indexOf('.', 0, true)
-                        //Gets rid of the last digit if input looks like this: $0.000
                         if (periodIndex == amount.length() - 4) {
-                            textBox.text = textBox.text.substring(0, textBox.length() - 1)
+                            textBox.text = oldText
                             amount.setSelection(amount.length())
                         }
                     }
                 }
             }
 
-            // Looks at text before anything changes
+            // Stores current input before any changes
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
+                oldText = amount.text.toString()
             }
 
             //Puts a dollar sign to the front of the input
